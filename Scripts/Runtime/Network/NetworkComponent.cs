@@ -115,6 +115,28 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
+        /// 创建Tcp网络频道。
+        /// </summary>
+        /// <param name="name">网络频道名称。</param>
+        /// <param name="networkChannelHelper">网络频道辅助器。</param>
+        /// <returns>要创建的网络频道。</returns>
+        public INetworkChannel CreateTcpChannel(string name, INetworkChannelHelper networkChannelHelper)
+        {
+            return m_NetworkManager.CreateNetworkChannel(name, ServiceType.Tcp, networkChannelHelper);
+        }
+        
+        /// <summary>
+        /// 创建TcpSync网络频道。
+        /// </summary>
+        /// <param name="name">网络频道名称。</param>
+        /// <param name="networkChannelHelper">网络频道辅助器。</param>
+        /// <returns>要创建的网络频道。</returns>
+        public INetworkChannel CreateTcpSyncChannel(string name, INetworkChannelHelper networkChannelHelper)
+        {
+            return m_NetworkManager.CreateNetworkChannel(name, ServiceType.TcpWithSyncReceive, networkChannelHelper);
+        }
+        
+        /// <summary>
         /// 销毁网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>

@@ -11,6 +11,7 @@ using GameFramework.FileSystem;
 using GameFramework.ObjectPool;
 using GameFramework.Resource;
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -601,7 +602,8 @@ namespace UnityGameFramework.Runtime
                     m_ReadWritePathType = ReadWritePathType.PersistentData;
                 }
 
-                m_ResourceManager.SetReadWritePath(Application.persistentDataPath);
+                // ChangeBy: Shine Wu 2020/07/21 设置更新模式下载路径
+                m_ResourceManager.SetReadWritePath(Path.Combine(Application.persistentDataPath, "Update"));
             }
 
             if (m_EditorResourceMode)
@@ -773,6 +775,16 @@ namespace UnityGameFramework.Runtime
         public void InitResources(InitResourcesCompleteCallback initResourcesCompleteCallback)
         {
             m_ResourceManager.InitResources(initResourcesCompleteCallback);
+        }
+        
+        /// ChangeBy: Shine Wu 2020/07/21
+        /// <summary>
+        /// 使用可更新模式并初始化资源。
+        /// </summary>
+        /// <param name="initResourcesCompleteCallback">使用可更新模式并初始化资源完成的回调函数。</param>
+        public void InitUpdatable(InitResourcesCompleteCallback initResourcesCompleteCallback)
+        {
+            m_ResourceManager.InitUpdatable(initResourcesCompleteCallback);
         }
 
         /// <summary>

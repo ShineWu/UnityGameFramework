@@ -797,6 +797,15 @@ namespace UnityGameFramework.Runtime
             throw new NotSupportedException("InitResources");
         }
 
+        /// ChangeBy: Shine Wu 2020/07/21
+        /// <summary>
+        /// 使用可更新模式并初始化资源。
+        /// </summary>
+        public void InitUpdatable(InitResourcesCompleteCallback initResourcesCompleteCallback)
+        {
+            throw new NotSupportedException("InitUpdatable");
+        }
+
         /// <summary>
         /// 检查版本资源列表。
         /// </summary>

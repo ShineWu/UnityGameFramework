@@ -13450,6 +13450,13 @@
             </summary>
             <param name="initResourcesCompleteCallback">使用单机模式并初始化资源完成时的回调函数。</param>
         </member>
+        <member name="M:GameFramework.Resource.IResourceManager.InitUpdatable(GameFramework.Resource.InitResourcesCompleteCallback)">
+            ChangeBy: Shine Wu 2020/07/21
+            <summary>
+            使用可更新模式并初始化资源。
+            </summary>
+            <param name="initResourcesCompleteCallback">使用可更新模式并初始化资源完成的回调函数。</param>
+        </member>
         <member name="M:GameFramework.Resource.IResourceManager.CheckVersionList(System.Int32)">
             <summary>
             使用可更新模式并检查版本资源列表。
@@ -14807,6 +14814,9 @@
             </summary>
             <returns>依赖资源名称。</returns>
         </member>
+        <member name="F:GameFramework.Resource.ResourceManager.m_ResourceUpdater">
+            ChangeBy: Shine Wu 2020/07/21 更新模式初始化资源
+        </member>
         <member name="M:GameFramework.Resource.ResourceManager.#ctor">
             <summary>
             初始化资源管理器的新实例。
@@ -15101,6 +15111,16 @@
             使用单机模式并初始化资源。
             </summary>
             <param name="initResourcesCompleteCallback">使用单机模式并初始化资源完成时的回调函数。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.InitUpdatable(GameFramework.Resource.InitResourcesCompleteCallback)">
+            ChangeBy: Shine Wu 2018/07/21
+            <summary>
+            使用可更新模式并初始化资源。
+            </summary>
+            <param name="initResourcesCompleteCallback">使用可更新模式并初始化资源完成的回调函数。</param>
+        </member>
+        <member name="M:GameFramework.Resource.ResourceManager.OnInitUpdatableCheckComplete(System.Int32,System.Int32,System.Int32,System.Int64,System.Int64)">
+            ChangeBy: Shine Wu 2018/07/21
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.CheckVersionList(System.Int32)">
             <summary>

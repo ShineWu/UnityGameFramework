@@ -19,30 +19,34 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Debugger")]
     public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
-        /// <summary>
-        /// 默认调试器漂浮框大小。
-        /// </summary>
-        internal static readonly Rect DefaultIconRect = new Rect(10f, 10f, 60f, 60f);
+        // /// <summary>
+        // /// 默认调试器漂浮框大小。
+        // /// </summary>
+        // internal static readonly Rect DefaultIconRect = new Rect(10f, 10f, 60f, 60f);
+        //
+        // /// <summary>
+        // /// 默认调试器窗口大小。
+        // /// </summary>
+        // internal static readonly Rect DefaultWindowRect = new Rect(10f, 10f, 640f, 480f);
 
-        /// <summary>
-        /// 默认调试器窗口大小。
-        /// </summary>
-        internal static readonly Rect DefaultWindowRect = new Rect(10f, 10f, 640f, 480f);
-
-        /// <summary>
-        /// 默认调试器窗口缩放比例。
-        /// </summary>
-        internal static readonly float DefaultWindowScale = 1f;
-
+        // /// <summary>
+        // /// 默认调试器窗口缩放比例。
+        // /// </summary>
+        // internal static readonly float DefaultWindowScale = 1f;
+        
         private IDebuggerManager m_DebuggerManager = null;
         private Rect m_DragRect = new Rect(0f, 0f, float.MaxValue, 25f);
-        private Rect m_IconRect = DefaultIconRect;
-        private Rect m_WindowRect = DefaultWindowRect;
-        private float m_WindowScale = DefaultWindowScale;
+        private Rect m_IconRect = Rect.zero;
+        private Rect m_WindowRect = Rect.zero;
+        private Vector2 m_ScreenSize = Vector2.zero;
+        private float m_WindowScale = 1f;
 
-        [SerializeField]
-        private GUISkin m_Skin = null;
+        // [SerializeField]
+        // private GUISkin m_Skin = null;
 
+        [SerializeField] 
+        private Vector2 m_DesignSize = new Vector2(720f, 1280f);
+        
         [SerializeField]
         private DebuggerActiveWindowType m_ActiveWindow = DebuggerActiveWindowType.AlwaysOpen;
 
@@ -148,19 +152,50 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取或设置调试器窗口缩放比例。
+        /// 获取或设置调试器窗口设计分辨率。
         /// </summary>
-        public float WindowScale
+        public Vector2 DesignSize
         {
             get
             {
-                return m_WindowScale;
+                return m_DesignSize;
             }
             set
             {
-                m_WindowScale = value;
+                m_DesignSize = value;
+                ResetLayout();
             }
         }
+        
+        /// <summary>
+        /// 获取或设置调试器窗口实际分辨率。
+        /// </summary>
+        public Vector2 ScreenSize
+        {
+            get
+            {
+                return m_ScreenSize;
+            }
+            set
+            {
+                m_ScreenSize = value;
+            }
+        }
+        
+        // /// <summary>
+        // /// 获取或设置调试器窗口缩放比例。
+        // /// </summary>
+        // public float WindowScale
+        // {
+        //     get
+        //     {
+        //         return m_WindowScale;
+        //     }
+        //     set
+        //     {
+        //         m_WindowScale = value;
+        //     }
+        // }
 
         /// <summary>
         /// 游戏框架组件初始化。
@@ -200,6 +235,8 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
+            ResetLayout();
+            
             RegisterDebuggerWindow("Console", m_ConsoleWindow);
             RegisterDebuggerWindow("Information/System", m_SystemInformationWindow);
             RegisterDebuggerWindow("Information/Environment", m_EnvironmentInformationWindow);
@@ -253,10 +290,10 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            GUISkin cachedGuiSkin = GUI.skin;
+            // GUISkin cachedGuiSkin = GUI.skin;
             Matrix4x4 cachedMatrix = GUI.matrix;
 
-            GUI.skin = m_Skin;
+            // GUI.skin = m_Skin;
             GUI.matrix = Matrix4x4.Scale(new Vector3(m_WindowScale, m_WindowScale, 1f));
 
             if (m_ShowFullWindow)
@@ -269,7 +306,7 @@ namespace UnityGameFramework.Runtime
             }
 
             GUI.matrix = cachedMatrix;
-            GUI.skin = cachedGuiSkin;
+            // GUI.skin = cachedGuiSkin;
         }
 
         /// <summary>
@@ -318,9 +355,23 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         public void ResetLayout()
         {
-            IconRect = DefaultIconRect;
-            WindowRect = DefaultWindowRect;
-            WindowScale = DefaultWindowScale;
+            if (Screen.width * m_DesignSize.y > Screen.height * m_DesignSize.x)
+            {
+                // 横屏
+                m_WindowScale = Screen.height / m_DesignSize.y;
+				m_ScreenSize.x = Screen.width * m_DesignSize.y / Screen.height;
+                m_ScreenSize.y = m_DesignSize.y;
+            }
+            else
+            {
+                // 竖屏
+                m_WindowScale = Screen.width / m_DesignSize.x;
+                m_ScreenSize.x = m_DesignSize.x;
+                m_ScreenSize.y = Screen.height * m_DesignSize.x / Screen.width;
+			}
+            
+            m_IconRect = new Rect(5f, 5f, 100f, 60f);
+            m_WindowRect = new Rect(5f, 5f, m_DesignSize.x * 0.75f - 10f, m_DesignSize.y * 0.75f - 10f);
         }
 
         /// <summary>

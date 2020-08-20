@@ -43,11 +43,14 @@ namespace UnityGameFramework.Runtime
         private string m_JsonHelperTypeName = "UnityGameFramework.Runtime.DefaultJsonHelper";
 
         [SerializeField]
-        private int m_FrameRate = 30;
+        private int m_GameQuality = 1;
+        
+        [SerializeField]
+        private int m_FrameRate = 60;
 
         [SerializeField]
         private float m_GameSpeed = 1f;
-
+        
         [SerializeField]
         private bool m_RunInBackground = true;
 
@@ -93,6 +96,22 @@ namespace UnityGameFramework.Runtime
             set;
         }
 
+        /// <summary>
+        /// 获取或设置游戏质量。
+        /// </summary>
+        public int GameQuality
+        {
+            get
+            {
+                return m_GameQuality;
+            }
+            set
+            {
+                m_GameQuality = value;
+                QualitySettings.SetQualityLevel(value);
+            }
+        }
+        
         /// <summary>
         /// 获取或设置游戏帧率。
         /// </summary>
@@ -205,6 +224,7 @@ namespace UnityGameFramework.Runtime
                 Log.Info("During this run, Game Framework will use editor resource files, which you should validate first.");
             }
 
+            QualitySettings.SetQualityLevel(m_GameQuality);
             Application.targetFrameRate = m_FrameRate;
             Time.timeScale = m_GameSpeed;
             Application.runInBackground = m_RunInBackground;

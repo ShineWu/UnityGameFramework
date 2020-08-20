@@ -14,7 +14,7 @@ namespace UnityGameFramework.Editor
     [CustomEditor(typeof(DebuggerComponent))]
     internal sealed class DebuggerComponentInspector : GameFrameworkInspector
     {
-        private SerializedProperty m_Skin = null;
+        private SerializedProperty m_DesignSize = null;
         private SerializedProperty m_ActiveWindow = null;
         private SerializedProperty m_ShowFullWindow = null;
         private SerializedProperty m_ConsoleWindow = null;
@@ -26,9 +26,7 @@ namespace UnityGameFramework.Editor
             serializedObject.Update();
 
             DebuggerComponent t = (DebuggerComponent)target;
-
-            EditorGUILayout.PropertyField(m_Skin);
-
+            
             if (EditorApplication.isPlaying && IsPrefabInHierarchy(t.gameObject))
             {
                 bool activeWindow = EditorGUILayout.Toggle("Active Window", t.ActiveWindow);
@@ -42,8 +40,10 @@ namespace UnityGameFramework.Editor
                 EditorGUILayout.PropertyField(m_ActiveWindow);
             }
 
+            EditorGUILayout.PropertyField(m_DesignSize);
+            
             EditorGUILayout.PropertyField(m_ShowFullWindow);
-
+            
             if (EditorApplication.isPlaying)
             {
                 if (GUILayout.Button("Reset Layout"))
@@ -59,7 +59,7 @@ namespace UnityGameFramework.Editor
 
         private void OnEnable()
         {
-            m_Skin = serializedObject.FindProperty("m_Skin");
+            m_DesignSize = serializedObject.FindProperty("m_DesignSize");
             m_ActiveWindow = serializedObject.FindProperty("m_ActiveWindow");
             m_ShowFullWindow = serializedObject.FindProperty("m_ShowFullWindow");
             m_ConsoleWindow = serializedObject.FindProperty("m_ConsoleWindow");

@@ -27,6 +27,7 @@ namespace UnityGameFramework.Editor
         private SerializedProperty m_ZipHelperTypeName = null;
         private SerializedProperty m_JsonHelperTypeName = null;
         private SerializedProperty m_FrameRate = null;
+        private SerializedProperty m_GameQuality = null;
         private SerializedProperty m_GameSpeed = null;
         private SerializedProperty m_RunInBackground = null;
         private SerializedProperty m_NeverSleep = null;
@@ -93,20 +94,7 @@ namespace UnityGameFramework.Editor
                 EditorGUILayout.EndVertical();
             }
             EditorGUI.EndDisabledGroup();
-
-            int frameRate = EditorGUILayout.IntSlider("Frame Rate", m_FrameRate.intValue, 1, 120);
-            if (frameRate != m_FrameRate.intValue)
-            {
-                if (EditorApplication.isPlaying)
-                {
-                    t.FrameRate = frameRate;
-                }
-                else
-                {
-                    m_FrameRate.intValue = frameRate;
-                }
-            }
-
+            
             EditorGUILayout.BeginVertical("box");
             {
                 float gameSpeed = EditorGUILayout.Slider("Game Speed", m_GameSpeed.floatValue, 0f, 8f);
@@ -130,31 +118,61 @@ namespace UnityGameFramework.Editor
             }
             EditorGUILayout.EndVertical();
 
-            bool runInBackground = EditorGUILayout.Toggle("Run in Background", m_RunInBackground.boolValue);
-            if (runInBackground != m_RunInBackground.boolValue)
+            EditorGUILayout.BeginVertical("box");
             {
-                if (EditorApplication.isPlaying)
+                int gameQuality = EditorGUILayout.Popup("Game Quality", m_GameQuality.intValue, QualitySettings.names);
+                if (gameQuality != m_GameQuality.intValue)
                 {
-                    t.RunInBackground = runInBackground;
+                    if (EditorApplication.isPlaying)
+                    {
+                        t.GameQuality = gameQuality;
+                    }
+                    else
+                    {
+                        m_GameQuality.intValue = gameQuality;
+                    }
                 }
-                else
+                
+                int frameRate = EditorGUILayout.IntSlider("Frame Rate", m_FrameRate.intValue, 1, 999);
+                if (frameRate != m_FrameRate.intValue)
                 {
-                    m_RunInBackground.boolValue = runInBackground;
+                    if (EditorApplication.isPlaying)
+                    {
+                        t.FrameRate = frameRate;
+                    }
+                    else
+                    {
+                        m_FrameRate.intValue = frameRate;
+                    }
+                }
+                
+                bool runInBackground = EditorGUILayout.Toggle("Run in Background", m_RunInBackground.boolValue);
+                if (runInBackground != m_RunInBackground.boolValue)
+                {
+                    if (EditorApplication.isPlaying)
+                    {
+                        t.RunInBackground = runInBackground;
+                    }
+                    else
+                    {
+                        m_RunInBackground.boolValue = runInBackground;
+                    }
+                }
+    
+                bool neverSleep = EditorGUILayout.Toggle("Never Sleep", m_NeverSleep.boolValue);
+                if (neverSleep != m_NeverSleep.boolValue)
+                {
+                    if (EditorApplication.isPlaying)
+                    {
+                        t.NeverSleep = neverSleep;
+                    }
+                    else
+                    {
+                        m_NeverSleep.boolValue = neverSleep;
+                    }
                 }
             }
-
-            bool neverSleep = EditorGUILayout.Toggle("Never Sleep", m_NeverSleep.boolValue);
-            if (neverSleep != m_NeverSleep.boolValue)
-            {
-                if (EditorApplication.isPlaying)
-                {
-                    t.NeverSleep = neverSleep;
-                }
-                else
-                {
-                    m_NeverSleep.boolValue = neverSleep;
-                }
-            }
+            EditorGUILayout.EndVertical();
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -175,6 +193,7 @@ namespace UnityGameFramework.Editor
             m_ZipHelperTypeName = serializedObject.FindProperty("m_ZipHelperTypeName");
             m_JsonHelperTypeName = serializedObject.FindProperty("m_JsonHelperTypeName");
             m_FrameRate = serializedObject.FindProperty("m_FrameRate");
+            m_GameQuality = serializedObject.FindProperty("m_GameQuality");
             m_GameSpeed = serializedObject.FindProperty("m_GameSpeed");
             m_RunInBackground = serializedObject.FindProperty("m_RunInBackground");
             m_NeverSleep = serializedObject.FindProperty("m_NeverSleep");
@@ -255,7 +274,7 @@ namespace UnityGameFramework.Editor
                     m_JsonHelperTypeName.stringValue = null;
                 }
             }
-
+            
             serializedObject.ApplyModifiedProperties();
         }
 

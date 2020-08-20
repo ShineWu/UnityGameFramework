@@ -1,5 +1,5 @@
 {
-  "name": "com.jiangyin.gameframework",
+  "name": "com.shinewu.gameframework",
   "displayName": "Game Framework",
   "category": "Game Framework",
   "description": "This is literally a game framework, based on Unity game engine. It encapsulates commonly used game modules during development, and, to a large degree, standardises the process, enhances the development speed and ensures the product quality.",
@@ -25,6 +25,6 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:ShineWu/UnityGameFramework.git",
-    "revision": "128c0d84d3fa44cfb93927010659b3d26c7f010d3"
+    "revision": "c57c2e594f5cf58cc6eb96e7d82dc5dec7e527b5"
   }
 }
